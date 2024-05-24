@@ -2,7 +2,7 @@
 """ API Module """
 
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from models import storage
 from api.v1.views import app_views
 from os import getenv
@@ -25,7 +25,7 @@ def close_storage(exception):
 def error_404(err):
     """Handler for the 404 error that returns a JSON.
     """
-    return jsonify({'error': 'Not found'})
+    return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 if __name__ == "__main__":
