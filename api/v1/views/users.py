@@ -57,12 +57,11 @@ def create_user():
         return make_response(jsonify({'error': 'Missing email'}), 400)
     if 'password' not in request.get_json():
         return make_response(jsonify({'error': 'Missing password'}), 400)
-    else:
-        obj_dict = request.get_json()
-        new_user = User(**obj_dict)
-        storage.new(new_user)
-        storage.save()
-        return make_response(jsonify(new_user.to_dict()), 201)
+    obj_dict = request.get_json()
+    new_user = User(**obj_dict)
+    storage.new(new_user)
+    storage.save()
+    return make_response(jsonify(new_user.to_dict()), 201)
 
 
 @app_views.route('/users/<user_id>',
@@ -78,6 +77,7 @@ def update_user(user_id):
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
     obj = storage.get(User, user_id)
     for key, value in request.get_json().items():
-        setattr(obj, key, value)
+        if key != 'email':
+            setattr(obj, key, value)
     obj.save()
     return jsonify(obj.to_dict())
