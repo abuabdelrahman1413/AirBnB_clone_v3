@@ -2,7 +2,7 @@
 """ API Module """
 
 
-from flask import Flask
+from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views
 from os import getenv
@@ -16,7 +16,16 @@ app.register_blueprint(app_views, url_prefix='/api/v1')
 
 @app.teardown_appcontext
 def close_storage(exception):
+    """Closes the storage session after every request.
+    """
     storage.close()
+
+
+@app.errorhandler(404)
+def error_404(err):
+    """Handler for the 404 error that returns a JSON.
+    """
+    return jsonify({'error': 'Not found'})
 
 
 if __name__ == "__main__":
