@@ -157,6 +157,10 @@ No known bugs at this time.
 Alexa Orrico - [Github](https://github.com/alexaorrico) / [Twitter](https://twitter.com/alexa_orrico)  
 Jennifer Huang - [Github](https://github.com/jhuang10123) / [Twitter](https://twitter.com/earthtojhuang)
 
+ALX team:
+Abdelrahman Metawei - [Github](https://github.com/AbduHany) / [Twitter](https://twitter.com/AbduuHany)
+Mahmoud Mohey Eldin - [Github](https://github.com/MoodyEG) / [Twitter](https://x.com/Moodyeg2012)
+
 Second part of Airbnb: Joann Vuong
 ## License
 Public Domain. No copy write protection. 
