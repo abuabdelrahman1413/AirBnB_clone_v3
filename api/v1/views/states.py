@@ -44,8 +44,11 @@ def delete_state(state_id):
 
 @app_views.route('/states', strict_slashes=False, methods=['POST'])
 def create_state():
+    """Creates a new state object and adds it to storage
+    with the given key value pairs.
+    """
     try:
-        request.get_json
+        request.get_json()
     except Exception:
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
     if 'name' not in request.get_json():
