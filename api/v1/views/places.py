@@ -75,6 +75,7 @@ def create_place(city_id):
     else:
         obj_dict = request.get_json()
         new_place = Place(**obj_dict)
+        setattr(new_place, 'city_id', city_id)
         storage.new(new_place)
         storage.save()
         return make_response(jsonify(new_place.to_dict()), 201)
