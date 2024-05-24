@@ -76,8 +76,9 @@ def update_user(user_id):
     except Exception:
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
     obj = storage.get(User, user_id)
+    ket = ['id', 'email', 'created_at', 'updated_at']
     for key, value in request.get_json().items():
-        if key != 'email':
+        if key not in ket:
             setattr(obj, key, value)
     obj.save()
     return jsonify(obj.to_dict())
