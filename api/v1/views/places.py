@@ -19,7 +19,7 @@ def get_places(city_id):
     if storage.get(City, city_id) is None:
         abort(404)
     places_list = []
-    for key, value in storage.all(City).items():
+    for key, value in storage.all(Place).items():
         if value.city_id == city_id:
             places_list.append(value.to_dict())
     return jsonify(places_list)
