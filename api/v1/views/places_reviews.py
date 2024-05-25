@@ -75,7 +75,7 @@ def create_review(place_id):
     else:
         obj_dict = request.get_json()
         new_review = Review(**obj_dict)
-        new_review.place_id = place_id
+        setattr(new_review, 'place_id', place_id)
         storage.new(new_review)
         storage.save()
         return make_response(jsonify(new_review.to_dict()), 201)
