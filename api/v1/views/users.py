@@ -59,8 +59,7 @@ def create_user():
         return make_response(jsonify({'error': 'Missing password'}), 400)
     obj_dict = request.get_json()
     new_user = User(**obj_dict)
-    storage.new(new_user)
-    storage.save()
+    new_user.save()
     return make_response(jsonify(new_user.to_dict()), 201)
 
 
