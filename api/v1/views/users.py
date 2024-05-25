@@ -52,11 +52,11 @@ def create_user():
     try:
         request.get_json()
     except Exception:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+        return abort(400, "Not a JSON")
     if 'email' not in request.get_json():
-        return make_response(jsonify({'error': 'Missing email'}), 400)
+        return abort(400, "Missing email")
     if 'password' not in request.get_json():
-        return make_response(jsonify({'error': 'Missing password'}), 400)
+        return abort(400, "Missing password")
     obj_dict = request.get_json()
     new_user = User(**obj_dict)
     new_user.save()
@@ -73,7 +73,7 @@ def update_user(user_id):
     try:
         request.get_json()
     except Exception:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+        return abort(400, "Not a JSON")
     obj = storage.get(User, user_id)
     ket = ['id', 'email', 'created_at', 'updated_at']
     for key, value in request.get_json().items():
