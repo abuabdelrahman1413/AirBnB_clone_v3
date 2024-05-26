@@ -59,7 +59,8 @@ def create_place(city_id):
     """Creates a new place object and adds it to storage
     with the given key value pairs.
     """
-    if storage.get(City, city_id) is None:
+    obj = storage.get(City, city_id)
+    if obj is None:
         abort(404)
     try:
         obj_dict = request.get_json()
@@ -70,7 +71,7 @@ def create_place(city_id):
     user_id = obj_dict['user_id']
     if storage.get(User, user_id) is None:
         abort(404)
-    if 'name' not in request.get_json():
+    if 'name' not in obj_dict:
         return make_response(jsonify({'error': 'Missing name'}), 400)
     new_place = Place(**obj_dict)
     setattr(new_place, 'city_id', city_id)
