@@ -84,7 +84,7 @@ def create_review(place_id):
     return make_response(jsonify(new_review.to_dict()), 201)
 
 
-@app_views.route('/cities/<review_id>',
+@app_views.route('/reviews/<review_id>',
                  strict_slashes=False, methods=['PUT'])
 def update_review(review_id):
     """Updates a review object with given keys and values
