@@ -15,11 +15,11 @@ storage_t = getenv("HBNB_TYPE_STORAGE")
 
 @app_views.route('/places/<place_id>/amenities', strict_slashes=False,
                  methods=['GET'])
-def get_amenities(place_id):
+def get_amenities_from_place(place_id):
     """retrieves amenities object in a place from storage and
     displays JSON representation to it.
     """
-    place = storage.get("Place", place_id)
+    place = storage.get(Place, place_id)
     if place is None:
         abort(404)
     if storage_t == "db":
@@ -35,7 +35,7 @@ def get_amenities(place_id):
 
 @app_views.route('/places/<place_id>/amenities/<amenity_id>',
                  strict_slashes=False, methods=['DELETE'])
-def delete_amenity(place_id, amenity_id):
+def delete_amenity_from_place(place_id, amenity_id):
     """Deletes amenity object from a place and displays
     an empty dictionary representation.
     """
