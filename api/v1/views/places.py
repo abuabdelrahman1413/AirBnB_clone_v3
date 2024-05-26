@@ -59,22 +59,24 @@ def create_place(city_id):
     """Creates a new place object and adds it to storage
     with the given key value pairs.
     """
-    obj = storage.get(City, city_id)
-    if obj is None:
+    city = storage.get(City, city_id)
+    if city is None:
         abort(404)
     try:
         obj_dict = request.get_json()
     except Exception:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+        abort(400, "Not a JSON")
     if 'user_id' not in obj_dict:
-        return make_response(jsonify({'error': 'Missing user_id'}), 400)
+        abort(400, "Missing user_id")
     user_id = obj_dict['user_id']
-    if storage.get(User, user_id) is None:
+    user = storage.get(User, user_id)
+    if user is None:
         abort(404)
     if 'name' not in obj_dict:
-        return make_response(jsonify({'error': 'Missing name'}), 400)
+        abort(400, "Missing name")
     new_place = Place(**obj_dict)
     setattr(new_place, 'city_id', city_id)
+    setattr(new_place, 'user_id', user_id)
     storage.new(new_place)
     storage.save()
     return make_response(jsonify(new_place.to_dict()), 201)
@@ -91,7 +93,7 @@ def update_place(place_id):
     try:
         obj_dict = request.get_json()
     except Exception:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
+        abort(400, "Not a JSON")
     ignore = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']
     for key, value in obj_dict.items():
         if key not in ignore:
