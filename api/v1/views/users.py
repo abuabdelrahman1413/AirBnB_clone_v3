@@ -49,8 +49,11 @@ def create_user():
     """Creates a new user object and adds it to storage
     with the given key value pairs.
     """
-    obj_dict = request.get_json()
-    if not obj_dict:
+    try:
+        obj_dict = request.get_json()
+        if obj_dict is None:
+            abort(400, "Not a JSON")
+    except Exception:
         abort(400, "Not a JSON")
     if 'email' not in obj_dict:
         abort(400, "Missing email")
@@ -70,8 +73,11 @@ def update_user(user_id):
     obj = storage.get(User, user_id)
     if obj is None:
         abort(404)
-    obj_dict = request.get_json()
-    if not obj_dict:
+    try:
+        obj_dict = request.get_json()
+        if obj_dict is None:
+            abort(400, "Not a JSON")
+    except Exception:
         abort(400, "Not a JSON")
     ket = ['id', 'email', 'created_at', 'updated_at']
     for key, value in obj_dict.items():

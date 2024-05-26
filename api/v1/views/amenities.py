@@ -51,6 +51,8 @@ def create_amenity():
     """
     try:
         obj_dict = request.get_json()
+        if obj_dict is None:
+            abort(400, "Not a JSON")
     except Exception:
         abort(400, "Not a JSON")
     if 'name' not in obj_dict:
@@ -71,6 +73,8 @@ def update_amenity(amenity_id):
         abort(404)
     try:
         obj_dict = request.get_json()
+        if obj_dict is None:
+            abort(400, "Not a JSON")
     except Exception:
         abort(400, "Not a JSON")
     for key, value in obj_dict.items():

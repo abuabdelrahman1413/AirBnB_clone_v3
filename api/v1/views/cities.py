@@ -63,6 +63,8 @@ def create_city(state_id):
         abort(404)
     try:
         obj_dict = request.get_json()
+        if obj_dict is None:
+            abort(400, "Not a JSON")
     except Exception:
         abort(400, "Not a JSON")
     if 'name' not in request.get_json():
@@ -83,6 +85,8 @@ def update_city(city_id):
         abort(404)
     try:
         obj_dict = request.get_json()
+        if obj_dict is None:
+            abort(400, "Not a JSON")
     except Exception:
         abort(400, "Not a JSON")
     for key, value in obj_dict.items():
