@@ -70,7 +70,7 @@ def link_amenity(place_id, amenity_id):
 
     if storage_t == "db":
         if amenity not in place.amenities:
-            place.amenities.append(amenity)
+            setattr(place, "amenities", amenity)
         else:
             return make_response(jsonify(amenity.to_dict()), 200)
     else:
