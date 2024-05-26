@@ -76,7 +76,6 @@ def create_place(city_id):
         abort(400, "Missing name")
     new_place = Place(**obj_dict)
     setattr(new_place, 'city_id', city_id)
-    setattr(new_place, 'user_id', user_id)
     storage.new(new_place)
     storage.save()
     return make_response(jsonify(new_place.to_dict()), 201)
@@ -92,6 +91,8 @@ def update_place(place_id):
         abort(404)
     try:
         obj_dict = request.get_json()
+        if obj_dict is None:
+            abort(400, "Not a JSON")
     except Exception:
         abort(400, "Not a JSON")
     ignore = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']
