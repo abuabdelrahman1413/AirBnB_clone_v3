@@ -136,7 +136,7 @@ def search_places():
                 if state is None:
                     continue
                 for city in state.cities:
-                   cities_id_pool.append(city.id)
+                    cities_id_pool.append(city.id)
     if 'cities' in search_param:
         if len(search_param['cities']) != 0:
             for city in search_param['cities']:
@@ -168,4 +168,3 @@ def search_places():
         if 'amenities' in res_dict:
             del res_dict['amenities']
     return jsonify(result_filtered)
-                            
