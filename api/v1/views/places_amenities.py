@@ -47,15 +47,16 @@ def delete_amenity_from_place(place_id, amenity_id):
     if amenity is None:
         abort(404)
 
-    if amenity.place_id != place_id:
-        abort(404)
     if storage_t == "db":
+        if amenity not in place.amenities:
+            abort(404)
         storage.delete(amenity)
-        storage.save()
-        return make_response(jsonify({}), 200)
     else:
+        if amenity_id not in place.amenity_ids:
+            abort(404)
         place.amenity_ids.remove(amenity_id)
-
+    storage.save()
+    return make_response(jsonify({}), 200)
 
 @app_views.route('/places/<place_id>/amenities/<amenity_id>',
                  strict_slashes=False, methods=['POST'])
