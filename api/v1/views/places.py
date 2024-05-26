@@ -5,9 +5,15 @@
 from flask import jsonify, abort, request, make_response  # type: ignore
 from models import storage
 from api.v1.views import app_views
+from models.state import State
+from models.amenity import Amenity
 from models.city import City
 from models.place import Place
 from models.user import User
+from os import getenv
+
+
+storage_t = getenv("HBNB_TYPE_STORAGE")
 
 
 @app_views.route('/cities/<city_id>/places', strict_slashes=False,
@@ -103,3 +109,55 @@ def update_place(place_id):
             setattr(obj, key, value)
     storage.save()
     return jsonify(obj.to_dict())
+
+
+@app_views.route('/places_search', methods=['POST'], strict_slashes=False)
+def search_places():
+    """Searches for places with given parameters
+    """
+    result_pool = []
+    try:
+        search_param = request.get_json()
+        if search_param is None:
+            abort(400, "Not a JSON")
+    except Exception:
+        abort(400, "Not a JSON")
+    if len(search_param) == 0:
+        places = storage.all(Place).values()
+        result_pool = [place.to_dict() for place in places]
+        return jsonify(result_pool)
+    cities_id_pool = []
+    if 'states' in search_param:
+        if len(search_param['states']) != 0:
+            for state_id in search_param['states']:
+                state = storage.get(State, state_id)
+                if state is None:
+                    continue
+                for city in state.cities:
+                   cities_id_pool.append(city.id)
+    if 'cities' in search_param:
+        if len(search_param['cities']) != 0:
+            for city in search_param['cities']:
+                if city not in cities_id_pool:
+                    cities_id_pool.append(city)
+    for key, value in storage.all(Place).items():
+        if value.city_id in cities_id_pool and value not in result_pool:
+            result_pool.append(value)
+    result_filtered = list(result_pool)
+    if 'amenities' in search_param:
+        if len(search_param['amenities']) != 0:
+            for place in result_pool:
+                for am_id in search_param['amenities']:
+                    if storage_t == 'db':
+                        am = storage.get(Amenity, am_id)
+                        if am is None:
+                            continue
+                        if am not in place.amenities:
+                            result_filtered.remove(place)
+                            break
+                    else:
+                        if am_id not in place.amenity_ids:
+                            result_filtered.remove(place)
+                            break
+    return jsonify([obj.to_dict() for obj in result_filtered])
+                            
