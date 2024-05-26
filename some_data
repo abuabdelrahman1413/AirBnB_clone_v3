@@ -1,0 +1,37 @@
+states:
+	0e391e25-dd3a-45f4-bce3-4d1dea83f3c7
+			660c9bbd-76c4-454f-b9a4-87efab0e948f
+					4703b2d8-e417-4243-a6f3-044fc06f020e
+					6ebec357-8589-435b-a5cb-fcd99b638fae
+			f01c88dc-9f08-4b32-a1c1-625fb1e44972
+					e58517c1-3214-465f-a982-78208a3266c0
+					d8a2b39f-6174-4f1f-a14a-561a81cabce2
+			94f16095-5ce6-4bec-8114-d1f3fa6f2b16
+
+
+	541bba6e-9543-4b33-8062-77ef26cd9778
+			44e7a911-2c16-4dc0-ad68-9ae0412afc21
+					f25b307b-4285-4902-8305-8cf908eace7a
+					e74201c2-6057-419d-be22-d0087eeb4179
+			5e061866-d4ad-4aa7-befe-2bf5f8698e29
+
+			79ff14a4-1888-4cd3-8a31-230fa34bfa00
+
+
+wifi : 49fcaedc-481a-4e05-934f-4867988c8ec5
+air con : 919be9d0-5789-4b56-b785-0e4d72ecc8ba
+885a80bf-1a79-431c-a5c7-f05d87c9e159
+hair dry : f4dfd576-7c29-4bdf-9fbd-5c95a170ebce
+1st aid : f7c854a4-f565-4aa5-8542-c4e17c498ef1
+fan : 3b9d6d6e-8b5c-4c3c-8b0d-5b6
+smoke : f7a087bb-13e2-463d-a951-b8feb7da899f
+curl -X POST http://0.0.0.0:5000/api/v1/places_search -H "Content-Type: application/json" -d '{"states": ["0e391e25-dd3a-45f4-bce3-4d1dea83f3c7"], "cities": ["660c9bbd-76c4-454f-b9a4-87efab0e948f"]}'
+
+
+curl -X POST http://0.0.0.0:5000/api/v1/places_search -H "Content-Type: application/json" -d '{"cities": ["660c9bbd-76c4-454f-b9a4-87efab0e948f"], "amenities": ["919be9d0-5789-4b56-b785-0e4d72ecc8ba", "49fcaedc-481a-4e05-934f-4867988c8ec5", "f7a087bb-13e2-463d-a951-b8feb7da899f", "f7c854a4-f565-4aa5-8542-c4e17c498ef1", "f4dfd576-7c29-4bdf-9fbd-5c95a170ebce"]}'
+
+
+
+
+
+
