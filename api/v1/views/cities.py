@@ -15,7 +15,8 @@ def get_cities(state_id):
     """retrieves cities object in a state from storage and
     displays JSON representation to it.
     """
-    if storage.get(State, state_id) is None:
+    obj = storage.get(State, state_id)
+    if obj is None:
         abort(404)
     city_list = []
     for key, value in storage.all(City).items():
@@ -61,32 +62,31 @@ def create_city(state_id):
     if storage.get(State, state_id) is None:
         abort(404)
     try:
-        request.get_json()
-    except Exception:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
-    if 'name' not in request.get_json():
-        return make_response(jsonify({'error': 'Missing name'}), 400)
-    else:
         obj_dict = request.get_json()
-        new_city = City(**obj_dict)
-        new_city.state_id = state_id
-        storage.new(new_city)
-        storage.save()
-        return make_response(jsonify(new_city.to_dict()), 201)
+    except Exception:
+        abort(400, "Not a JSON")
+    if 'name' not in request.get_json():
+        abort(400, "Missing name")
+    new_city = City(**obj_dict)
+    new_city.state_id = state_id
+    storage.new(new_city)
+    storage.save()
+    return make_response(jsonify(new_city.to_dict()), 201)
 
 
 @app_views.route('/cities/<city_id>', strict_slashes=False, methods=['PUT'])
 def update_city(city_id):
     """Updates a city object with given keys and values
     """
+    obj = storage.get(City, city_id)
     if storage.get(City, city_id) is None:
         abort(404)
     try:
-        request.get_json()
+        obj_dict = request.get_json()
     except Exception:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
-    obj = storage.get(City, city_id)
-    for key, value in request.get_json().items():
-        setattr(obj, key, value)
-    obj.save()
+        abort(400, "Not a JSON")
+    for key, value in obj_dict.items():
+        if key not in ['id', 'state_id', 'created_at', 'updated_at']:
+            setattr(obj, key, value)
+    storage.save()
     return jsonify(obj.to_dict())
