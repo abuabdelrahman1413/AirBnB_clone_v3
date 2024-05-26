@@ -123,10 +123,8 @@ def search_places():
     except Exception:
         abort(400, "Not a JSON")
 
-    if len(search_param) == 0:
-        places = storage.all(Place).values()
-        result_pool = [place.to_dict() for place in places]
-        return jsonify(result_pool)
+    if 'states' not in search_param and 'cities' not in search_param:
+        result_pool = storage.all(Place).values()
 
     cities_id_pool = []
     if 'states' in search_param:
