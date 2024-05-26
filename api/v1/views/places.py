@@ -62,23 +62,21 @@ def create_place(city_id):
     if storage.get(City, city_id) is None:
         abort(404)
     try:
-        request.get_json()
+        obj_dict = request.get_json()
     except Exception:
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
-    if 'user_id' not in request.get_json():
+    if 'user_id' not in obj_dict:
         return make_response(jsonify({'error': 'Missing user_id'}), 400)
-    user_id = request.get_json()['user_id']
+    user_id = obj_dict['user_id']
     if storage.get(User, user_id) is None:
         abort(404)
     if 'name' not in request.get_json():
         return make_response(jsonify({'error': 'Missing name'}), 400)
-    else:
-        obj_dict = request.get_json()
-        new_place = Place(**obj_dict)
-        setattr(new_place, 'city_id', city_id)
-        storage.new(new_place)
-        storage.save()
-        return make_response(jsonify(new_place.to_dict()), 201)
+    new_place = Place(**obj_dict)
+    setattr(new_place, 'city_id', city_id)
+    storage.new(new_place)
+    storage.save()
+    return make_response(jsonify(new_place.to_dict()), 201)
 
 
 @app_views.route('/places/<place_id>',
@@ -86,16 +84,16 @@ def create_place(city_id):
 def update_place(place_id):
     """Updates a place object with given keys and values
     """
-    if storage.get(Place, place_id) is None:
+    obj = storage.get(Place, place_id)
+    if obj is None:
         abort(404)
     try:
-        request.get_json()
+        obj_dict = request.get_json()
     except Exception:
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
-    obj = storage.get(Place, place_id)
     ignore = ['id', 'user_id', 'city_id', 'created_at', 'updated_at']
-    for key, value in request.get_json().items():
+    for key, value in obj_dict.items():
         if key not in ignore:
             setattr(obj, key, value)
-    obj.save()
+    storage.save()
     return jsonify(obj.to_dict())
