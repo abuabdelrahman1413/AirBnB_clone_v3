@@ -48,31 +48,30 @@ def create_state():
     with the given key value pairs.
     """
     try:
-        request.get_json()
-    except Exception:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
-    if 'name' not in request.get_json():
-        return make_response(jsonify({'error': 'Missing name'}), 400)
-    else:
         obj_dict = request.get_json()
-        new_state = State(**obj_dict)
-        storage.new(new_state)
-        storage.save()
-        return make_response(jsonify(new_state.to_dict()), 201)
+    except Exception:
+        abort(400, "Not a JSON")
+    if 'name' not in obj_dict:
+        abort(400, "Missing name")
+    new_state = State(**obj_dict)
+    storage.new(new_state)
+    storage.save()
+    return make_response(jsonify(new_state.to_dict()), 201)
 
 
 @app_views.route('/states/<state_id>', strict_slashes=False, methods=['PUT'])
 def update_state(state_id):
     """Updates a state object with given keys and values
     """
-    if storage.get(State, state_id) is None:
+    obj = storage.get(State, state_id)
+    if obj is None:
         abort(404)
     try:
-        request.get_json()
+        obj_dict = request.get_json()
     except Exception:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
-    obj = storage.get(State, state_id)
-    for key, value in request.get_json().items():
-        setattr(obj, key, value)
-    obj.save()
+        abort(400, "Not a JSON")
+    for key, value in obj_dict.items():
+        if key not in ['id', 'created_at', 'updated_at']:
+            setattr(obj, key, value)
+    storage.save()
     return jsonify(obj.to_dict())
