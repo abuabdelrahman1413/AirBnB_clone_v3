@@ -122,10 +122,12 @@ def search_places():
             abort(400, "Not a JSON")
     except Exception:
         abort(400, "Not a JSON")
+
     if len(search_param) == 0:
         places = storage.all(Place).values()
         result_pool = [place.to_dict() for place in places]
         return jsonify(result_pool)
+
     cities_id_pool = []
     if 'states' in search_param:
         if len(search_param['states']) != 0:
@@ -140,9 +142,11 @@ def search_places():
             for city in search_param['cities']:
                 if city not in cities_id_pool:
                     cities_id_pool.append(city)
+
     for key, value in storage.all(Place).items():
         if value.city_id in cities_id_pool and value not in result_pool:
             result_pool.append(value)
+
     result_filtered = list(result_pool)
     if 'amenities' in search_param:
         if len(search_param['amenities']) != 0:
@@ -159,5 +163,9 @@ def search_places():
                         if am_id not in place.amenity_ids:
                             result_filtered.remove(place)
                             break
-    return jsonify([obj.to_dict() for obj in result_filtered])
+    result_filtered = [obj.to_dict() for obj in result_filtered]
+    for res_dict in result_filtered:
+        if 'amenities' in res_dict:
+            del res_dict['amenities']
+    return jsonify(result_filtered)
                             
