@@ -64,6 +64,8 @@ def create_place(city_id):
         abort(404)
     try:
         obj_dict = request.get_json()
+        if obj_dict is None:
+            abort(400, "Not a JSON")
     except Exception:
         abort(400, "Not a JSON")
     if 'user_id' not in obj_dict:
