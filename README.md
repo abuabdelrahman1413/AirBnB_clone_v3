@@ -158,8 +158,7 @@ Alexa Orrico - [Github](https://github.com/alexaorrico) / [Twitter](https://twit
 Jennifer Huang - [Github](https://github.com/jhuang10123) / [Twitter](https://twitter.com/earthtojhuang)
 
 ALX team:
-Abdelrahman Metawei - [Github](https://github.com/AbduHany) / [Twitter](https://twitter.com/AbduuHany)
-Mahmoud Mohey Eldin - [Github](https://github.com/MoodyEG) / [Twitter](https://x.com/Moodyeg2012)
+Mohammed Said - [Github](https://github.com/abuabdelrahman1413)
 
 Second part of Airbnb: Joann Vuong
 ## License
